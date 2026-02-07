@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USA Phone Validator + DNC Checker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+            <h1 class="text-primary">
+                <i class="fas fa-phone-alt"></i> USA Phone Validator + DNC Checker
+            </h1>
+            <p class="text-muted">Validate phone numbers, check DNC lists, get person data - 100% client-side</p>
+            <div class="alert alert-info">
+                <i class="fas fa-bolt me-2"></i>
+                <strong>New Features:</strong> DNC Check + Person Lookup + Complete Data Export
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="card shadow-lg main-card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>Process Your Phone Numbers</h4>
+            </div>
+
+            <div class="card-body">
+                <!-- Processing Steps -->
+                <div class="processing-steps mb-4">
+                    <div class="processing-step">
+                        <div class="step-icon active" id="step1Icon">1</div>
+                        <div class="step-content">
+                            <h6>Upload & Basic Validation</h6>
+                            <small class="text-muted">Upload your file and validate phone numbers</small>
+                        </div>
+                    </div>
+                    <div class="processing-step">
+                        <div class="step-icon" id="step2Icon">2</div>
+                        <div class="step-content">
+                            <h6>DNC & Person Check</h6>
+                            <small class="text-muted">Check against DNC lists and get person data</small>
+                        </div>
+                    </div>
+                    <div class="processing-step">
+                        <div class="step-icon" id="step3Icon">3</div>
+                        <div class="step-content">
+                            <h6>Download Results</h6>
+                            <small class="text-muted">Export clean and DNC numbers with all data</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Upload & Basic Validation -->
+                <div class="step-section active" id="step1">
+                    <h5><span class="step-badge">1</span> Upload & Basic Validation</h5>
+                    <div class="upload-section text-center p-4 mb-4 border-dashed">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                            <h5>Upload Your Numbers File</h5>
+                            <p class="text-muted">.txt file with one number per line</p>
+                            <input type="file" id="fileInput" accept=".txt" class="d-none">
+                            <button class="btn btn-primary btn-lg" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-upload me-2"></i>Choose File
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="fileInfo" class="alert alert-info d-none">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-file me-2"></i>
+                                <span id="fileName">No file selected</span>
+                            </div>
+                            <div>
+                                <span id="fileSize" class="badge bg-secondary"></span>
+                                <span id="fileCount" class="badge bg-info ms-2"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-4">
+                        <button id="validateBtn" class="btn btn-warning btn-lg" onclick="startBasicValidation()" disabled>
+                            <i class="fas fa-check-circle me-2"></i>Start Basic Validation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: DNC & Person Check -->
+                <div class="step-section d-none" id="step2">
+                    <h5><span class="step-badge">2</span> DNC & Person Data Check</h5>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-info-circle me-2"></i>
+                        This will check each number against DNC lists and retrieve person information.
+                        <br><small>Process may take time depending on number of phone numbers.</small>
+                    </div>
+
+                    <div class="text-center mb-4">
+                        <button id="dncCheckBtn" class="btn btn-danger btn-lg" onclick="startDNCCheck()">
+                            <i class="fas fa-search me-2"></i>Start DNC & Person Check
+                        </button>
+                        <button id="cancelCheckBtn" class="btn btn-outline-secondary btn-lg d-none" onclick="cancelDNCCheck()">
+                            <i class="fas fa-stop-circle me-2"></i>Cancel Check
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Results & Download -->
+                <div class="step-section d-none" id="step3">
+                    <h5><span class="step-badge">3</span> Results & Download</h5>
+
+                    <!-- Progress Bars -->
+                    <div class="progress-container mb-4">
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>Basic Validation</span>
+                                <span id="validationPercent" class="float-end">0%</span>
+                            </div>
+                            <div class="progress">
+                                <div id="validationProgress" class="progress-bar bg-warning" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span>DNC & Person Check</span>
+                                <span id="dncPercent" class="float-end">0%</span>
+                            </div>
+                            <div class="progress">
+                                <div id="dncProgress" class="progress-bar bg-danger" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Checking Display -->
+                    <div class="live-checking mb-4 d-none" id="liveCheckDisplay">
+                        <h6><i class="fas fa-sync-alt fa-spin me-2"></i>Currently Processing:</h6>
+                        <div class="checking-number" id="currentNumber">Waiting...</div>
+                        <div class="checking-status" id="currentStatus">Initializing...</div>
+                        <div class="checking-details mt-2" id="currentDetails"></div>
+                    </div>
+
+                    <!-- Results Summary -->
+                    <div class="results-summary mb-4 d-none" id="resultsSummary">
+                        <div class="row">
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="card text-center bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Total</h6>
+                                        <h2 id="totalCount" class="text-primary">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="card text-center bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Valid</h6>
+                                        <h2 id="validCount" class="text-success">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="card text-center bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">DNC</h6>
+                                        <h2 id="dncCount" class="text-danger">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="card text-center bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted">Clean</h6>
+                                        <h2 id="cleanCount" class="text-info">0</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Download Buttons -->
+                    <div class="download-section d-none" id="downloadSection">
+                        <h5><i class="fas fa-download me-2"></i>Download Results</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 download-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-success"><i class="fas fa-check-circle me-2"></i>Clean Numbers</h6>
+                                        <p class="text-muted">Not in DNC with person data</p>
+                                        <button class="btn btn-success w-100" onclick="downloadCleanNumbers()" disabled>
+                                            <i class="fas fa-download me-2"></i>Download Clean
+                                        </button>
+                                        <p class="mt-2"><small id="cleanFileInfo">0 numbers</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 download-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-danger"><i class="fas fa-ban me-2"></i>DNC Numbers</h6>
+                                        <p class="text-muted">Found in DNC with details</p>
+                                        <button class="btn btn-danger w-100" onclick="downloadDNCNumbers()" disabled>
+                                            <i class="fas fa-download me-2"></i>Download DNC
+                                        </button>
+                                        <p class="mt-2"><small id="dncFileInfo">0 numbers</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 download-card">
+                                    <div class="card-body text-center">
+                                        <h6 class="text-primary"><i class="fas fa-database me-2"></i>Complete Data</h6>
+                                        <p class="text-muted">All data with person information</p>
+                                        <button class="btn btn-primary w-100" onclick="downloadAllData()">
+                                            <i class="fas fa-download me-2"></i>Download All Data
+                                        </button>
+                                        <button class="btn btn-outline-info w-100 mt-2" onclick="downloadCompleteReport()">
+                                            <i class="fas fa-file-alt me-2"></i>Detailed Report
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Data Preview -->
+                        <div class="data-preview mt-4 d-none" id="dataPreview">
+                            <h6><i class="fas fa-eye me-2"></i>Data Preview (First 5 Results)</h6>
+                            <div class="preview-table" id="previewTable"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer text-muted text-center">
+                <small>
+                    <i class="fas fa-shield-alt me-1"></i>Secure Processing | 
+                    <i class="fas fa-bolt me-1"></i>Fast Validation | 
+                    <i class="fas fa-database me-1"></i>DNC & Person API Integration
+                </small>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>How It Works</h5>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Upload</strong> your .txt file with phone numbers (one per line)</li>
+                    <li><strong>Basic Validation</strong> checks if numbers are valid US format</li>
+                    <li><strong>DNC Check</strong> verifies each number against Do Not Call lists</li>
+                    <li><strong>Person Data</strong> retrieves name, address, and other information</li>
+                    <li><strong>Download</strong> separate files for clean and DNC numbers with complete data</li>
+                </ol>
+                <div class="alert alert-success mt-3">
+                    <strong>Data Included in Downloads:</strong><br>
+                    Phone, DNC Status, Listed, Type, State, NDNC, SDNC, Name, Status, DOB, Age, Address, City, State, Zip, Deliverable, Relatives
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="states-data.js"></script>
+    <script src="script.js"></script>
+    <script src="dnc-checker.js"></script>
+    <script src="person-checker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+</html>
