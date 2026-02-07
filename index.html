@@ -4,272 +4,661 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USA Phone Validator + DNC Checker</title>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📱</text></svg>">
 </head>
 <body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
     <div class="container mt-4">
-        <!-- Header -->
-        <div class="text-center mb-4">
-            <h1 class="text-primary">
-                <i class="fas fa-phone-alt"></i> USA Phone Validator + DNC Checker
+        <!-- Header Section -->
+        <div class="header-section text-center mb-4">
+            <h1 class="text-primary mb-3">
+                <i class="fas fa-phone-alt me-2"></i> USA Phone Validator + DNC Checker
             </h1>
-            <p class="text-muted">Validate phone numbers, check DNC lists, get person data - 100% client-side</p>
-            <div class="alert alert-info">
-                <i class="fas fa-bolt me-2"></i>
-                <strong>New Features:</strong> DNC Check + Person Lookup + Complete Data Export
+            <p class="text-muted mb-3">Validate phone numbers, check DNC lists, get person data - 100% client-side processing</p>
+            
+            <!-- Status Indicators -->
+            <div class="status-indicators">
+                <span class="status-indicator status-live">
+                    <i class="fas fa-circle"></i> Live Processing
+                </span>
+                <span class="status-indicator status-secure">
+                    <i class="fas fa-shield-alt"></i> Secure
+                </span>
+                <span class="status-indicator status-fast">
+                    <i class="fas fa-bolt"></i> Fast
+                </span>
             </div>
         </div>
 
-        <!-- Main Card -->
-        <div class="card shadow-lg main-card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-mobile-alt me-2"></i>Process Your Phone Numbers</h4>
+        <!-- Main Processing Card -->
+        <div class="card main-processing-card shadow-lg">
+            <div class="card-header bg-gradient-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-mobile-alt me-2"></i>Phone Number Processing System
+                    </h4>
+                    <span class="badge bg-light text-primary" id="currentTime"></span>
+                </div>
             </div>
 
             <div class="card-body">
-                <!-- Processing Steps -->
-                <div class="processing-steps mb-4">
-                    <div class="processing-step">
-                        <div class="step-icon active" id="step1Icon">1</div>
-                        <div class="step-content">
-                            <h6>Upload & Basic Validation</h6>
-                            <small class="text-muted">Upload your file and validate phone numbers</small>
+                <!-- Processing Steps Navigation -->
+                <div class="processing-steps-nav mb-4">
+                    <div class="step-nav-item active" data-step="1">
+                        <div class="step-nav-icon">1</div>
+                        <div class="step-nav-content">
+                            <h6>Upload & Validate</h6>
+                            <small>Upload your file and validate numbers</small>
                         </div>
                     </div>
-                    <div class="processing-step">
-                        <div class="step-icon" id="step2Icon">2</div>
-                        <div class="step-content">
-                            <h6>DNC & Person Check</h6>
-                            <small class="text-muted">Check against DNC lists and get person data</small>
+                    <div class="step-nav-item" data-step="2">
+                        <div class="step-nav-icon">2</div>
+                        <div class="step-nav-content">
+                            <h6>DNC Check</h6>
+                            <small>Check against DNC lists</small>
                         </div>
                     </div>
-                    <div class="processing-step">
-                        <div class="step-icon" id="step3Icon">3</div>
-                        <div class="step-content">
-                            <h6>Download Results</h6>
-                            <small class="text-muted">Export clean and DNC numbers with all data</small>
+                    <div class="step-nav-item" data-step="3">
+                        <div class="step-nav-icon">3</div>
+                        <div class="step-nav-content">
+                            <h6>Get Results</h6>
+                            <small>Download processed data</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 1: Upload & Basic Validation -->
-                <div class="step-section active" id="step1">
-                    <h5><span class="step-badge">1</span> Upload & Basic Validation</h5>
-                    <div class="upload-section text-center p-4 mb-4 border-dashed">
-                        <div class="upload-area" id="uploadArea">
-                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
-                            <h5>Upload Your Numbers File</h5>
-                            <p class="text-muted">.txt file with one number per line</p>
-                            <input type="file" id="fileInput" accept=".txt" class="d-none">
-                            <button class="btn btn-primary btn-lg" onclick="document.getElementById('fileInput').click()">
-                                <i class="fas fa-upload me-2"></i>Choose File
+                <!-- Step 1: Upload & Validation -->
+                <div class="step-content active" id="step1Content">
+                    <div class="step-header">
+                        <h5>
+                            <span class="step-number">1</span>
+                            Upload Your Phone Numbers File
+                        </h5>
+                        <p class="text-muted">Upload a .txt file with one phone number per line</p>
+                    </div>
+
+                    <!-- File Upload Area -->
+                    <div class="file-upload-area mb-4">
+                        <div class="upload-container" id="uploadContainer">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <h4>Drag & Drop Your File</h4>
+                            <p class="text-muted">or click to browse</p>
+                            <p class="upload-info">
+                                <i class="fas fa-info-circle"></i>
+                                Supports .txt files with up to 1 million numbers
+                            </p>
+                            <button class="btn btn-primary btn-upload" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-upload me-2"></i>Browse Files
                             </button>
+                            <input type="file" id="fileInput" class="d-none" accept=".txt">
                         </div>
                     </div>
 
-                    <div id="fileInfo" class="alert alert-info d-none">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-file me-2"></i>
-                                <span id="fileName">No file selected</span>
-                            </div>
-                            <div>
-                                <span id="fileSize" class="badge bg-secondary"></span>
-                                <span id="fileCount" class="badge bg-info ms-2"></span>
+                    <!-- File Information -->
+                    <div class="file-info-card d-none" id="fileInfoCard">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            <i class="fas fa-file-text me-2 text-primary"></i>
+                                            <span id="fileName">No file selected</span>
+                                        </h6>
+                                        <div class="file-details">
+                                            <span class="file-size" id="fileSize"></span>
+                                            <span class="file-count ms-3" id="fileCount"></span>
+                                            <span class="file-status ms-3" id="fileStatus"></span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="clearFile()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="text-center mb-4">
-                        <button id="validateBtn" class="btn btn-warning btn-lg" onclick="startBasicValidation()" disabled>
-                            <i class="fas fa-check-circle me-2"></i>Start Basic Validation
+                    <!-- Validation Options -->
+                    <div class="validation-options mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-cogs me-2"></i>Validation Settings
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="validateFormat" checked>
+                                            <label class="form-check-label" for="validateFormat">
+                                                Validate phone format (10 digits)
+                                            </label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="validateAreaCode" checked>
+                                            <label class="form-check-label" for="validateAreaCode">
+                                                Validate area codes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="removeDuplicates" checked>
+                                            <label class="form-check-label" for="removeDuplicates">
+                                                Remove duplicate numbers
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="cleanNumbers" checked>
+                                            <label class="form-check-label" for="cleanNumbers">
+                                                Clean numbers (remove spaces, dashes)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="text-center">
+                        <button class="btn btn-warning btn-lg btn-start-validation" id="startValidationBtn" onclick="startBasicValidation()" disabled>
+                            <i class="fas fa-play-circle me-2"></i>Start Validation Process
                         </button>
                     </div>
                 </div>
 
-                <!-- Step 2: DNC & Person Check -->
-                <div class="step-section d-none" id="step2">
-                    <h5><span class="step-badge">2</span> DNC & Person Data Check</h5>
-                    <div class="alert alert-warning">
-                        <i class="fas fa-info-circle me-2"></i>
-                        This will check each number against DNC lists and retrieve person information.
-                        <br><small>Process may take time depending on number of phone numbers.</small>
+                <!-- Step 2: DNC Checking -->
+                <div class="step-content d-none" id="step2Content">
+                    <div class="step-header">
+                        <h5>
+                            <span class="step-number">2</span>
+                            DNC List & Person Data Check
+                        </h5>
+                        <p class="text-muted">Check numbers against Do Not Call lists and retrieve person information</p>
                     </div>
 
+                    <!-- DNC Check Options -->
+                    <div class="dnc-options mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-search me-2"></i>DNC Check Settings
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Batch Size</label>
+                                            <select class="form-select" id="batchSize">
+                                                <option value="10">10 numbers/batch</option>
+                                                <option value="25">25 numbers/batch</option>
+                                                <option value="50" selected>50 numbers/batch</option>
+                                                <option value="100">100 numbers/batch</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Delay Between Requests</label>
+                                            <select class="form-select" id="requestDelay">
+                                                <option value="500">500ms</option>
+                                                <option value="1000" selected>1 second</option>
+                                                <option value="2000">2 seconds</option>
+                                                <option value="3000">3 seconds</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Max Retries</label>
+                                            <select class="form-select" id="maxRetries">
+                                                <option value="1">1 retry</option>
+                                                <option value="2">2 retries</option>
+                                                <option value="3" selected>3 retries</option>
+                                                <option value="5">5 retries</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="enableCaching" checked>
+                                    <label class="form-check-label" for="enableCaching">
+                                        Enable caching (faster repeated checks)
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="useProxy" checked>
+                                    <label class="form-check-label" for="useProxy">
+                                        Use proxy server (prevents CORS errors)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="getPersonData" checked>
+                                    <label class="form-check-label" for="getPersonData">
+                                        Retrieve person information
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
                     <div class="text-center mb-4">
-                        <button id="dncCheckBtn" class="btn btn-danger btn-lg" onclick="startDNCCheck()">
+                        <button class="btn btn-danger btn-lg btn-start-dnc" id="startDNCCheckBtn" onclick="startDNCCheck()">
                             <i class="fas fa-search me-2"></i>Start DNC & Person Check
                         </button>
-                        <button id="cancelCheckBtn" class="btn btn-outline-secondary btn-lg d-none" onclick="cancelDNCCheck()">
+                        <button class="btn btn-outline-secondary btn-lg ms-2 d-none" id="cancelCheckBtn" onclick="cancelDNCCheck()">
                             <i class="fas fa-stop-circle me-2"></i>Cancel Check
                         </button>
+                    </div>
+
+                    <!-- Performance Stats -->
+                    <div class="performance-stats d-none" id="performanceStats">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-chart-line me-2"></i>Performance Statistics
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row stats-row">
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="stat-card">
+                                            <div class="stat-icon text-primary">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="stat-content">
+                                                <div class="stat-value" id="elapsedTime">0s</div>
+                                                <div class="stat-label">Elapsed Time</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="stat-card">
+                                            <div class="stat-icon text-success">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="stat-content">
+                                                <div class="stat-value" id="processedCount">0</div>
+                                                <div class="stat-label">Processed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="stat-card">
+                                            <div class="stat-icon text-info">
+                                                <i class="fas fa-tachometer-alt"></i>
+                                            </div>
+                                            <div class="stat-content">
+                                                <div class="stat-value" id="processingSpeed">0/s</div>
+                                                <div class="stat-label">Speed</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="stat-card">
+                                            <div class="stat-icon text-warning">
+                                                <i class="fas fa-percentage"></i>
+                                            </div>
+                                            <div class="stat-content">
+                                                <div class="stat-value" id="successRate">0%</div>
+                                                <div class="stat-label">Success Rate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Step 3: Results & Download -->
-                <div class="step-section d-none" id="step3">
-                    <h5><span class="step-badge">3</span> Results & Download</h5>
+                <div class="step-content d-none" id="step3Content">
+                    <div class="step-header">
+                        <h5>
+                            <span class="step-number">3</span>
+                            Processing Results & Downloads
+                        </h5>
+                        <p class="text-muted">Review results and download processed data</p>
+                    </div>
 
-                    <!-- Progress Bars -->
-                    <div class="progress-container mb-4">
+                    <!-- Progress Indicators -->
+                    <div class="progress-section mb-4">
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>Basic Validation</span>
-                                <span id="validationPercent" class="float-end">0%</span>
+                                <span class="progress-percent" id="validationPercent">0%</span>
                             </div>
                             <div class="progress">
-                                <div id="validationProgress" class="progress-bar bg-warning" style="width: 0%"></div>
+                                <div class="progress-bar bg-warning" id="validationProgress" style="width: 0%"></div>
                             </div>
                         </div>
                         <div class="progress-item">
                             <div class="progress-label">
                                 <span>DNC & Person Check</span>
-                                <span id="dncPercent" class="float-end">0%</span>
+                                <span class="progress-percent" id="dncPercent">0%</span>
                             </div>
                             <div class="progress">
-                                <div id="dncProgress" class="progress-bar bg-danger" style="width: 0%"></div>
+                                <div class="progress-bar bg-danger" id="dncProgress" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Live Checking Display -->
-                    <div class="live-checking mb-4 d-none" id="liveCheckDisplay">
-                        <h6><i class="fas fa-sync-alt fa-spin me-2"></i>Currently Processing:</h6>
-                        <div class="checking-number" id="currentNumber">Waiting...</div>
-                        <div class="checking-status" id="currentStatus">Initializing...</div>
-                        <div class="checking-details mt-2" id="currentDetails"></div>
+                    <!-- Live Processing Display -->
+                    <div class="live-processing-display mb-4 d-none" id="liveProcessingDisplay">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-sync-alt fa-spin me-2"></i>Live Processing
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="current-processing">
+                                    <div class="processing-number" id="currentNumber">
+                                        <span class="label">Current Number:</span>
+                                        <span class="value">Waiting...</span>
+                                    </div>
+                                    <div class="processing-status" id="currentStatus">
+                                        <span class="label">Status:</span>
+                                        <span class="value">Initializing...</span>
+                                    </div>
+                                    <div class="processing-details" id="currentDetails"></div>
+                                </div>
+                                <div class="processing-time mt-3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <small>Elapsed: <span id="elapsedTimeDisplay">0s</span></small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small>Remaining: <span id="remainingTime">Calculating...</span></small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small>Speed: <span id="currentSpeed">0/sec</span></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Results Summary -->
                     <div class="results-summary mb-4 d-none" id="resultsSummary">
-                        <div class="row">
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="card text-center bg-light">
-                                    <div class="card-body">
-                                        <h6 class="text-muted">Total</h6>
-                                        <h2 id="totalCount" class="text-primary">0</h2>
-                                    </div>
-                                </div>
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-bar me-2"></i>Processing Summary
+                                </h5>
                             </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="card text-center bg-light">
-                                    <div class="card-body">
-                                        <h6 class="text-muted">Valid</h6>
-                                        <h2 id="validCount" class="text-success">0</h2>
+                            <div class="card-body">
+                                <div class="row summary-cards">
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="summary-card total">
+                                            <div class="summary-icon">
+                                                <i class="fas fa-list-ol"></i>
+                                            </div>
+                                            <div class="summary-content">
+                                                <div class="summary-value" id="totalNumbers">0</div>
+                                                <div class="summary-label">Total Numbers</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="card text-center bg-light">
-                                    <div class="card-body">
-                                        <h6 class="text-muted">DNC</h6>
-                                        <h2 id="dncCount" class="text-danger">0</h2>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="summary-card valid">
+                                            <div class="summary-icon">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="summary-content">
+                                                <div class="summary-value" id="validNumbers">0</div>
+                                                <div class="summary-label">Valid Numbers</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="card text-center bg-light">
-                                    <div class="card-body">
-                                        <h6 class="text-muted">Clean</h6>
-                                        <h2 id="cleanCount" class="text-info">0</h2>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="summary-card dnc">
+                                            <div class="summary-icon">
+                                                <i class="fas fa-ban"></i>
+                                            </div>
+                                            <div class="summary-content">
+                                                <div class="summary-value" id="dncNumbers">0</div>
+                                                <div class="summary-label">DNC Numbers</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3">
+                                        <div class="summary-card clean">
+                                            <div class="summary-icon">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <div class="summary-content">
+                                                <div class="summary-value" id="cleanNumbers">0</div>
+                                                <div class="summary-label">Clean Numbers</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Download Buttons -->
-                    <div class="download-section d-none" id="downloadSection">
-                        <h5><i class="fas fa-download me-2"></i>Download Results</h5>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100 download-card">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-success"><i class="fas fa-check-circle me-2"></i>Clean Numbers</h6>
-                                        <p class="text-muted">Not in DNC with person data</p>
-                                        <button class="btn btn-success w-100" onclick="downloadCleanNumbers()" disabled>
-                                            <i class="fas fa-download me-2"></i>Download Clean
-                                        </button>
-                                        <p class="mt-2"><small id="cleanFileInfo">0 numbers</small></p>
+                    <!-- Download Options -->
+                    <div class="download-section mb-4 d-none" id="downloadSection">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-download me-2"></i>Download Results
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row download-options">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="download-option clean">
+                                            <div class="option-icon">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="option-content">
+                                                <h6>Clean Numbers</h6>
+                                                <p class="text-muted">Numbers not in DNC lists with person data</p>
+                                                <button class="btn btn-success w-100" onclick="downloadCleanNumbers()" id="downloadCleanBtn" disabled>
+                                                    <i class="fas fa-download me-2"></i>Download (<span id="cleanCount">0</span>)
+                                                </button>
+                                                <small class="file-info">CSV format with all details</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="download-option dnc">
+                                            <div class="option-icon">
+                                                <i class="fas fa-ban"></i>
+                                            </div>
+                                            <div class="option-content">
+                                                <h6>DNC Numbers</h6>
+                                                <p class="text-muted">Numbers found in DNC lists</p>
+                                                <button class="btn btn-danger w-100" onclick="downloadDNCNumbers()" id="downloadDNCBtn" disabled>
+                                                    <i class="fas fa-download me-2"></i>Download (<span id="dncCount">0</span>)
+                                                </button>
+                                                <small class="file-info">CSV with DNC reasons</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="download-option all">
+                                            <div class="option-icon">
+                                                <i class="fas fa-database"></i>
+                                            </div>
+                                            <div class="option-content">
+                                                <h6>Complete Data</h6>
+                                                <p class="text-muted">All processed data in one file</p>
+                                                <button class="btn btn-primary w-100" onclick="downloadAllData()" id="downloadAllBtn">
+                                                    <i class="fas fa-download me-2"></i>Download All
+                                                </button>
+                                                <button class="btn btn-outline-info w-100 mt-2" onclick="downloadCompleteReport()" id="downloadReportBtn">
+                                                    <i class="fas fa-file-alt me-2"></i>Detailed Report
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100 download-card">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-danger"><i class="fas fa-ban me-2"></i>DNC Numbers</h6>
-                                        <p class="text-muted">Found in DNC with details</p>
-                                        <button class="btn btn-danger w-100" onclick="downloadDNCNumbers()" disabled>
-                                            <i class="fas fa-download me-2"></i>Download DNC
+                                
+                                <!-- Quick Actions -->
+                                <div class="quick-actions mt-4">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-outline-secondary" onclick="exportToJSON()">
+                                            <i class="fas fa-file-code me-2"></i>Export as JSON
                                         </button>
-                                        <p class="mt-2"><small id="dncFileInfo">0 numbers</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100 download-card">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-primary"><i class="fas fa-database me-2"></i>Complete Data</h6>
-                                        <p class="text-muted">All data with person information</p>
-                                        <button class="btn btn-primary w-100" onclick="downloadAllData()">
-                                            <i class="fas fa-download me-2"></i>Download All Data
+                                        <button class="btn btn-outline-secondary" onclick="copyResults()">
+                                            <i class="fas fa-copy me-2"></i>Copy Results
                                         </button>
-                                        <button class="btn btn-outline-info w-100 mt-2" onclick="downloadCompleteReport()">
-                                            <i class="fas fa-file-alt me-2"></i>Detailed Report
+                                        <button class="btn btn-outline-secondary" onclick="printResults()">
+                                            <i class="fas fa-print me-2"></i>Print Summary
+                                        </button>
+                                        <button class="btn btn-outline-secondary" onclick="resetAll()">
+                                            <i class="fas fa-redo me-2"></i>Start New
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Data Preview -->
-                        <div class="data-preview mt-4 d-none" id="dataPreview">
-                            <h6><i class="fas fa-eye me-2"></i>Data Preview (First 5 Results)</h6>
-                            <div class="preview-table" id="previewTable"></div>
+                    </div>
+
+                    <!-- Data Preview -->
+                    <div class="data-preview d-none" id="dataPreview">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-table me-2"></i>Data Preview (First 10 Records)
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive preview-table">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Phone</th>
+                                                <th>DNC Status</th>
+                                                <th>Name</th>
+                                                <th>Address</th>
+                                                <th>State</th>
+                                                <th>Carrier</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="previewTableBody">
+                                            <tr>
+                                                <td colspan="7" class="text-center text-muted">No data to preview</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="showFullData()">
+                                        <i class="fas fa-expand me-1"></i>View Full Data
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card-footer text-muted text-center">
-                <small>
-                    <i class="fas fa-shield-alt me-1"></i>Secure Processing | 
-                    <i class="fas fa-bolt me-1"></i>Fast Validation | 
-                    <i class="fas fa-database me-1"></i>DNC & Person API Integration
-                </small>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            All processing happens in your browser. No data is sent to external servers.
+                        </small>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <small class="text-muted">
+                            <span id="memoryUsage">Memory: Loading...</span> | 
+                            <span id="processingStatus">Status: Ready</span>
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Instructions -->
-        <div class="card mt-4">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>How It Works</h5>
-            </div>
-            <div class="card-body">
-                <ol>
-                    <li><strong>Upload</strong> your .txt file with phone numbers (one per line)</li>
-                    <li><strong>Basic Validation</strong> checks if numbers are valid US format</li>
-                    <li><strong>DNC Check</strong> verifies each number against Do Not Call lists</li>
-                    <li><strong>Person Data</strong> retrieves name, address, and other information</li>
-                    <li><strong>Download</strong> separate files for clean and DNC numbers with complete data</li>
-                </ol>
-                <div class="alert alert-success mt-3">
-                    <strong>Data Included in Downloads:</strong><br>
-                    Phone, DNC Status, Listed, Type, State, NDNC, SDNC, Name, Status, DOB, Age, Address, City, State, Zip, Deliverable, Relatives
+        <!-- Instructions & Help -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-question-circle me-2"></i>How to Use
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ol class="mb-0">
+                            <li>Prepare a .txt file with one phone number per line</li>
+                            <li>Upload the file using the upload area</li>
+                            <li>Start basic validation to clean and validate numbers</li>
+                            <li>Run DNC check to verify against Do Not Call lists</li>
+                            <li>Download results in your preferred format</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>Tips & Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="mb-0">
+                            <li>Maximum file size: 100MB (approx. 1 million numbers)</li>
+                            <li>Supported formats: 10-digit US phone numbers</li>
+                            <li>Processing speed: 50-100 numbers/second</li>
+                            <li>Data includes: Name, address, DNC status, carrier info</li>
+                            <li>Export formats: CSV, JSON, Text Report</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer mt-4 text-center">
+            <p class="text-muted">
+                <small>
+                    USA Phone Validator & DNC Checker | Version 2.0 | 
+                    <i class="fas fa-code"></i> with <i class="fas fa-heart text-danger"></i> by Developer
+                </small>
+            </p>
         </div>
     </div>
 
     <!-- Scripts -->
     <script src="states-data.js"></script>
+    <script src="config.js"></script>
     <script src="script.js"></script>
     <script src="dnc-checker.js"></script>
     <script src="person-checker.js"></script>
+    
+    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
