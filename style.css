@@ -1,0 +1,445 @@
+/* Custom Styles for Phone Validator + DNC Checker */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-bottom: 50px;
+}
+
+/* Main Card */
+.main-card {
+    border-radius: 15px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.main-card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    border-bottom: none;
+    padding: 20px;
+}
+
+/* Processing Steps */
+.processing-steps {
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.processing-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.processing-step:hover {
+    background-color: #f8f9fa;
+}
+
+.step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+}
+
+.step-icon.active {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.step-icon.completed {
+    background: #28a745;
+    color: white;
+}
+
+.step-content h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.step-content small {
+    font-size: 0.85rem;
+}
+
+/* Step Sections */
+.step-section {
+    padding: 25px;
+    border-radius: 10px;
+    background: white;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s;
+}
+
+.step-section.active {
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.1);
+}
+
+.step-badge {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* Upload Section */
+.upload-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.border-dashed {
+    border: 3px dashed #007bff;
+    border-radius: 12px;
+}
+
+.upload-area {
+    cursor: pointer;
+    padding: 50px 20px;
+    transition: all 0.3s;
+    border-radius: 12px;
+}
+
+.upload-area:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: scale(1.01);
+}
+
+.upload-area.drag-over {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-color: #0056b3;
+}
+
+/* Progress Container */
+.progress-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.progress-item {
+    margin-bottom: 20px;
+}
+
+.progress-item:last-child {
+    margin-bottom: 0;
+}
+
+.progress-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #495057;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress {
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 12px;
+    transition: width 0.3s ease;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* Live Checking Display */
+.live-checking {
+    background: white;
+    border-left: 5px solid #17a2b8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    animation: pulseCheck 3s infinite;
+}
+
+@keyframes pulseCheck {
+    0% { box-shadow: 0 4px 6px rgba(23, 162, 184, 0.1); }
+    50% { box-shadow: 0 4px 12px rgba(23, 162, 184, 0.2); }
+    100% { box-shadow: 0 4px 6px rgba(23, 162, 184, 0.1); }
+}
+
+.checking-number {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #212529;
+    margin-bottom: 8px;
+    font-family: 'Courier New', monospace;
+    padding: 5px 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.checking-status {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.checking-details {
+    font-size: 0.9rem;
+    color: #495057;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #6c757d;
+}
+
+/* Status Colors */
+.status-checking {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.status-valid {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-dnc {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Results Summary Cards */
+.results-summary .card {
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.results-summary .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.results-summary .card-body {
+    padding: 20px 10px;
+}
+
+.results-summary h2 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.results-summary h6 {
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/* Download Cards */
+.download-card {
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    height: 100%;
+}
+
+.download-card:hover {
+    border-color: #007bff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.download-card .card-body {
+    padding: 25px 15px;
+}
+
+.download-card h6 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.download-card .btn {
+    padding: 10px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.download-card .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Data Preview */
+.data-preview {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.preview-table {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.preview-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+.preview-row:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.preview-label {
+    font-weight: 600;
+    color: #495057;
+    padding-right: 15px;
+}
+
+.preview-value {
+    color: #212529;
+    word-break: break-word;
+}
+
+/* Buttons */
+.btn-lg {
+    padding: 12px 35px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Notification Area */
+.notification-area {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 350px;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .step-section {
+        padding: 15px;
+    }
+    
+    .upload-area {
+        padding: 30px 10px;
+    }
+    
+    .btn-lg {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+    
+    .processing-step {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .step-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .checking-number {
+        font-size: 1.2rem;
+    }
+    
+    .preview-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
